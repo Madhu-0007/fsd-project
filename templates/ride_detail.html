@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ ride.from_location }} → {{ ride.to_location }} — RidePool{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <a href="{{ url_for('search') }}" class="btn btn-secondary btn-sm mb-3" id="backToSearchBtn">
+    &larr; Back to Search
+  </a>
+
+  <!-- Seat Warning -->
+  <div id="seatWarning" class="alert alert-warning d-none">
+    <strong>Hurry!</strong> Only <span id="seatCount"></span> seat(s) left!
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Ride Details -->
+    <div class="col-md-7">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">{{ ride.from_location }} → {{ ride.to_location }}</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered mb-0">
+            <tr><th>Date</th><td>{{ ride.ride_date }}</td></tr>
+            <tr><th>Time</th><td>{{ ride.ride_time }}</td></tr>
+            <tr>
+              <th>Seats Available</th>
+              <td>
+                <span class="seat-badge" data-seats="{{ ride.seats_available }}">
+                  {% if ride.seats_available == 0 %}Fully Booked{% else %}{{ ride.seats_available }}{% endif %}
+                </span>
+              </td>
+            </tr>
+            <tr><th>Price per Seat</th><td><span class="price-badge">₹{{ "%.0f"|format(ride.price_per_seat) }}</span></td></tr>
+            <tr><th>Driver</th><td>{{ ride.driver_name }}</td></tr>
+            <tr><th>Driver Email</th><td>{{ ride.driver_email }}</td></tr>
+            {% if ride.notes %}
+            <tr><th>Notes</th><td>{{ ride.notes }}</td></tr>
+            {% endif %}
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Request Form -->
+    <div class="col-md-5">
+      <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">Request a Seat</h5>
+        </div>
+        <div class="card-body">
+
+          {% if ride.seats_available == 0 %}
+            <div class="alert alert-danger text-center">
+              <strong>Fully Booked</strong><br>
+              <small>No seats available for this ride.</small>
+            </div>
+            <a href="{{ url_for('search') }}" class="btn btn-danger w-100">Find Another Ride</a>
+          {% else %}
+            <form action="{{ url_for('request_ride', ride_id=ride.id) }}" method="POST"
+                  id="requestRideForm" novalidate>
+
+              <div class="mb-3">
+                <label class="form-label" for="passenger_name">Your Name</label>
+                <input type="text" class="form-control" id="passenger_name" name="passenger_name"
+                  placeholder="Full name">
+                <div class="error-msg" id="err-passenger_name"></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="passenger_email">Your Email</label>
+                <input type="email" class="form-control" id="passenger_email" name="passenger_email"
+                  placeholder="your@email.com">
+                <div class="error-msg" id="err-passenger_email"></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="seats_requested">Seats Requested</label>
+                <input type="number" class="form-control" id="seats_requested" name="seats_requested"
+                  min="1" max="{{ ride.seats_available }}" value="1">
+                <div class="form-text">Max {{ ride.seats_available }} seat(s) available</div>
+                <div class="error-msg" id="err-seats_requested"></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="message">Message <span class="text-muted">(optional)</span></label>
+                <textarea class="form-control" id="message" name="message" rows="3"
+                  placeholder="Message for the driver..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100" id="requestSeatBtn">
+                <span class="btn-text">Request Seat ✅</span>
+                <span class="spinner-border spinner-border-sm d-none" id="reqSpinner" role="status"></span>
+              </button>
+            </form>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

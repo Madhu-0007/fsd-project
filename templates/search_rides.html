@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Find a Ride — RidePool Finder{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Filter Form -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Filter Rides</h5>
+      <form action="{{ url_for('search') }}" method="GET" id="searchFilterForm">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-4">
+            <label class="form-label small" for="filter-from">From</label>
+            <input type="text" class="form-control" id="filter-from" name="from_location"
+              placeholder="Origin city" value="{{ from_q }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small" for="filter-to">To</label>
+            <input type="text" class="form-control" id="filter-to" name="to_location"
+              placeholder="Destination city" value="{{ to_q }}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small" for="filter-date">Date</label>
+            <input type="date" class="form-control" id="filter-date" name="ride_date"
+              value="{{ date_q }}" data-auto-submit="true">
+          </div>
+          <div class="col-md-1">
+            <button type="submit" class="btn btn-danger w-100" id="filterSubmitBtn">Go</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <h4 class="mb-3">
+    {% if rides %}{{ rides|length }} Ride{% if rides|length != 1 %}s{% endif %} Found
+    {% else %}Search Results{% endif %}
+  </h4>
+
+  {% if not rides %}
+    <div class="alert alert-info">No rides found. Try different filters or
+      <a href="{{ url_for('post_ride') }}">post your own ride</a>.</div>
+  {% else %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for ride in rides %}
+      <div class="col">
+        <div class="card ride-card h-100 shadow-sm" onclick="window.location='/ride/{{ ride.id }}'">
+          <div class="card-body">
+            <h5 class="card-title">{{ ride.from_location }} → {{ ride.to_location }}</h5>
+            <p class="card-text text-muted small mb-1">📅 {{ ride.ride_date }} &bull; 🕐 {{ ride.ride_time }}</p>
+            <p class="card-text small mb-3">👤 {{ ride.driver_name }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="seat-badge">
+                {% if ride.seats_available == 0 %}Fully Booked
+                {% else %}{{ ride.seats_available }} seat{% if ride.seats_available != 1 %}s{% endif %}{% endif %}
+              </span>
+              <span class="price-badge">₹{{ "%.0f"|format(ride.price_per_seat) }}/seat</span>
+            </div>
+          </div>
+          <div class="card-footer bg-transparent">
+            <a href="{{ url_for('ride_detail', id=ride.id) }}"
+               class="btn btn-outline-danger btn-sm w-100" id="viewRide{{ ride.id }}Btn">View Details</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

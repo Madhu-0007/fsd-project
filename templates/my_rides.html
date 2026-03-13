@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}All Posted Rides — RidePool Finder{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">All Posted Rides</h2>
+    <a href="{{ url_for('post_ride') }}" class="btn btn-danger btn-sm" id="postNewRideBtn">+ Post a Ride</a>
+  </div>
+
+  {% if not rides %}
+    <div class="alert alert-info">No rides posted yet.
+      <a href="{{ url_for('post_ride') }}">Be the first to post a ride!</a>
+    </div>
+  {% else %}
+    <div class="table-responsive">
+      <table class="table table-hover table-striped table-bordered align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Seats</th>
+            <th>Price</th>
+            <th>Driver</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ride in rides %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ ride.from_location }}</td>
+            <td>{{ ride.to_location }}</td>
+            <td>{{ ride.ride_date }}</td>
+            <td>{{ ride.ride_time }}</td>
+            <td>
+              {% if ride.seats_available == 0 %}
+                <span class="badge bg-danger">Booked</span>
+              {% elif ride.seats_available <= 2 %}
+                <span class="badge bg-warning text-dark">{{ ride.seats_available }} left</span>
+              {% else %}
+                <span class="badge bg-success">{{ ride.seats_available }}</span>
+              {% endif %}
+            </td>
+            <td><span class="price-badge">₹{{ "%.0f"|format(ride.price_per_seat) }}</span></td>
+            <td>{{ ride.driver_name }}</td>
+            <td>
+              <a href="{{ url_for('ride_detail', id=ride.id) }}"
+                 class="btn btn-outline-danger btn-sm" id="viewRideTableBtn{{ ride.id }}">View</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-muted small">Showing {{ rides|length }} ride{% if rides|length != 1 %}s{% endif %}</p>
+  {% endif %}
+
+</div>
+{% endblock %}

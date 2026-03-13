@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Success — RidePool Finder{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+      <div class="card shadow-sm p-4">
+        <div class="display-1 mb-3">✅</div>
+
+        {% if success_type == 'post' %}
+          <h2 class="fw-bold">Ride Posted!</h2>
+          <p class="text-muted">Your ride has been successfully listed. Passengers can now find and request a seat.</p>
+        {% else %}
+          <h2 class="fw-bold">Request Sent!</h2>
+          <p class="text-muted">Your ride request has been sent!</p>
+          <p class="text-muted">The driver will contact you via email.</p>
+        {% endif %}
+
+        <div class="d-flex gap-3 justify-content-center mt-3">
+          <a href="{{ url_for('search') }}" class="btn btn-outline-danger" id="findAnotherBtn">Find Another Ride</a>
+          <a href="{{ url_for('index') }}" class="btn btn-danger" id="goHomeBtn">Go Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert"
+       aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        {% if success_type == 'post' %}🎉 Ride posted successfully!
+        {% else %}✅ Request submitted!{% endif %}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function () {
+    var toast = new bootstrap.Toast(document.getElementById('successToast'), { delay: 4000 });
+    toast.show();
+  });
+</script>
+{% endblock %}

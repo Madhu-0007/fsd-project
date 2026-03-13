@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Post a Ride — RidePool Finder{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <h2 class="mb-4">Post a Ride</h2>
+
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <form action="{{ url_for('post_ride') }}" method="POST" id="postRideForm" novalidate>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="driver_name">Driver Name</label>
+                <input type="text" class="form-control" id="driver_name" name="driver_name"
+                  placeholder="Your full name" value="{{ form_data.get('driver_name', '') }}">
+                <div class="error-msg" id="err-driver_name"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="driver_email">Driver Email</label>
+                <input type="email" class="form-control" id="driver_email" name="driver_email"
+                  placeholder="your@email.com" value="{{ form_data.get('driver_email', '') }}">
+                <div class="error-msg" id="err-driver_email"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="from_location">From Location</label>
+                <input type="text" class="form-control" id="from_location" name="from_location"
+                  placeholder="e.g., Bangalore" value="{{ form_data.get('from_location', '') }}">
+                <div class="error-msg" id="err-from_location"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="to_location">To Location</label>
+                <input type="text" class="form-control" id="to_location" name="to_location"
+                  placeholder="e.g., Mysore" value="{{ form_data.get('to_location', '') }}">
+                <div class="error-msg" id="err-to_location"></div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="ride_date">Ride Date</label>
+                <input type="date" class="form-control" id="ride_date" name="ride_date"
+                  value="{{ form_data.get('ride_date', '') }}">
+                <div class="error-msg" id="err-ride_date"></div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="ride_time">Ride Time</label>
+                <input type="time" class="form-control" id="ride_time" name="ride_time"
+                  value="{{ form_data.get('ride_time', '') }}">
+                <div class="error-msg" id="err-ride_time"></div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="seats_available">Seats Available</label>
+                <input type="number" class="form-control" id="seats_available" name="seats_available"
+                  min="1" max="8" placeholder="1–8" value="{{ form_data.get('seats_available', '') }}">
+                <div class="error-msg" id="err-seats_available"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="price_per_seat">Price per Seat (₹)</label>
+                <div class="input-group">
+                  <span class="input-group-text">₹</span>
+                  <input type="number" class="form-control" id="price_per_seat" name="price_per_seat"
+                    min="0" step="0.01" placeholder="0.00" value="{{ form_data.get('price_per_seat', '') }}">
+                </div>
+                <div class="error-msg" id="err-price_per_seat"></div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label" for="notes">Notes <span class="text-muted">(optional)</span></label>
+                <textarea class="form-control" id="notes" name="notes" rows="3"
+                  placeholder="Any special instructions for passengers...">{{ form_data.get('notes', '') }}</textarea>
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn btn-danger w-100" id="postRideSubmitBtn">
+                  Post My Ride 🚗
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

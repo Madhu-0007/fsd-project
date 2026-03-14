@@ -1,0 +1,63 @@
+/* ===== RidePool Finder — Custom CSS (Minimal) ===== */
+
+:root {
+  --primary-dark: #1a1a2e;
+  --accent: #e94560;
+  --card-hover-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* Hero section */
+.hero-section {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  color: white;
+  padding: 60px 0;
+}
+
+/* Ride cards hover effect */
+.ride-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.ride-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+/* Price badge */
+.price-badge {
+  background-color: #e94560;
+  color: white;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-weight: 600;
+}
+
+/* Seat badge */
+.seat-badge {
+  background-color: #0f3460;
+  color: white;
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+
+/* Footer */
+footer {
+  background: #1a1a2e;
+  color: #adb5bd;
+  text-align: center;
+  padding: 20px;
+  margin-top: 60px;
+}
+
+/* Form validation error styling */
+.field-error {
+  border-color: #dc3545 !important;
+}
+.error-msg {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}

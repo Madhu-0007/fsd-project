@@ -193,6 +193,8 @@ def my_rides():
     return render_template('my_rides.html', rides=rides)
 
 
+# Initialise DB on startup (works with both gunicorn and flask dev server)
+init_db()
+
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True)

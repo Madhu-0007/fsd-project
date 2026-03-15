@@ -9,6 +9,7 @@ A full-stack Car Pool Finder web app built with Python/Flask, SQLite, Bootstrap 
   <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white" />
 </div>
 
+
 ## Project Structure
 ```text
 /
@@ -91,3 +92,9 @@ After posting a ride or submitting a seat request, the user lands on a centered 
 A full Bootstrap `table-hover table-striped` listing every ride in the database. Columns: `#`, `From`, `To`, `Date`, `Time`, `Seats`, `Price`, `Driver`, `Actions`. The Seats column uses colour-coded Bootstrap badges: 🟢 green (3+), 🟡 yellow (1–2 left), 🔴 red (Fully Booked). A **View** action button on each row links directly to that ride's detail page.
 <br>
 <img src="docs/my_rides.png" width="800"/>
+
+## 🌐 Live Demo
+
+**[https://fsd-project-7otr.onrender.com](https://fsd-project-7otr.onrender.com)**
+
+> Deployed on Render (free tier — may take ~30 seconds to wake up on first visit)
